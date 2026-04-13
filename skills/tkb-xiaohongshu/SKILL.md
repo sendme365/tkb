@@ -100,10 +100,9 @@ EVALEOF
 - `NOTE_BODY`：正文文字
 - `IMAGE_URLS`：图片 URL 数组
 
-如果 `NOTE_BODY` 为空，使用 snapshot fallback：
+如果 `NOTE_BODY` 为空，使用 get text fallback：
 
 ```bash
-agent-browser snapshot -i
 agent-browser get text body
 ```
 
@@ -112,7 +111,7 @@ agent-browser get text body
 ### Step 5：生成目录结构
 
 1. 生成 slug：将 `NOTE_TITLE` 转为小写 + 连字符，去除特殊字符，截取前 50 字符
-2. 生成目录名：`<今天日期YYYY-MM-DD>-<slug>`
+2. 生成目录名：`<YYYY-MM-DD>-<slug>`（日期用系统日期，格式 `date +%Y-%m-%d`）
 3. 设置路径变量：
    - `TRIAGE_DIR` = `/Users/I333878/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/triage/xiaohongshu/<目录名>`
    - `IMAGES_DIR` = `<TRIAGE_DIR>/images`
@@ -167,13 +166,13 @@ type: xiaohongshu
 
 ## 图片
 
-<每张成功下载的图片一行，格式：![图N](./images/img-NN.jpg)>
+<仅列出 Step 6 中成功下载的图片（curl 未报错且文件非空），每张一行，格式：![图N](./images/img-NN.jpg)>
 ![截屏](./images/screenshot.png)
 ```
 
 ### Step 8：返回控制权
 
-完成后，将以下信息返回给调用方（tkb-ingest）继续执行：
+完成后，将以下变量传递给 tkb-ingest 继续执行：
 - `TRIAGE_DIR`：triage 目录完整路径
 - `ENTRY_SLUG`：目录名（用于后续路径构建）
 - 来源类型标记：`xiaohongshu`（供第五步移动逻辑识别）

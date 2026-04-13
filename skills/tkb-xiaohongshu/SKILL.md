@@ -68,26 +68,14 @@ agent-browser get title
 
 #### 4b. 提取笔记正文和作者
 
-执行以下 JavaScript 提取笔记核心内容：
+执行以下 JavaScript 提取笔记核心内容（分两步：先提取文字，再提取图片 URL）：
 
 ```bash
-agent-browser eval --stdin <<'EVALEOF'
-JSON.stringify({
-  title: document.querySelector('#detail-title')?.innerText
-    || document.querySelector('.title')?.innerText
-    || document.title,
-  author: document.querySelector('.author-wrapper .username')?.innerText
-    || document.querySelector('.user-name')?.innerText
-    || '',
-  body: document.querySelector('#detail-desc')?.innerText
-    || document.querySelector('.desc')?.innerText
-    || document.querySelector('.note-content')?.innerText
-    || '',
-  imageUrls: Array.from(document.querySelectorAll('.note-slider-img, .swiper-slide img, .content img'))
-    .map(img => img.src || img.dataset.src)
-    .filter(src => src && src.startsWith('http') && !src.includes('avatar'))
-})
-EVALEOF
+# 提取标题、作者、正文
+agent-browser eval "JSON.stringify({title: document.querySelector('#detail-title')?.innerText || document.querySelector('.title')?.innerText || document.title, author: document.querySelector('.author-wrapper .username')?.innerText || document.querySelector('.user-name')?.innerText || '', body: (document.querySelector('#detail-desc')?.innerText || document.querySelector('.desc')?.innerText || document.querySelector('.note-content')?.innerText || '').substring(0, 2000)})"
+
+# 提取图片 URL 列表
+agent-browser eval "JSON.stringify(Array.from(document.querySelectorAll('.note-slider-img, .swiper-slide img, .content img')).map(img => img.src || img.dataset.src).filter(src => src && src.startsWith('http') && !src.includes('avatar')))"
 ```
 
 将 JSON 结果解析为：

@@ -20,16 +20,12 @@ TKB 知识库根目录：`/Users/I333878/Library/Mobile Documents/com~apple~Clou
 首次使用前，需要完成一次性登录流程（之后自动复用登录状态）：
 
 ```bash
-agent-browser --session-name xiaohongshu open https://www.xiaohongshu.com
+agent-browser --profile ~/.agent-browser/xiaohongshu-profile --headed open https://www.xiaohongshu.com
 ```
 
-在浏览器中完成登录（扫码或账号密码），然后：
+在弹出的浏览器窗口中完成登录（扫码或账号密码），登录完成后关闭浏览器窗口。
 
-```bash
-agent-browser close
-```
-
-登录状态自动保存到 `~/.agent-browser/sessions/`，后续所有调用自动复用，无需再次登录。
+Profile 自动保存到 `~/.agent-browser/xiaohongshu-profile/`，后续所有调用自动复用，无需再次登录。
 
 ## 流程
 
@@ -44,7 +40,7 @@ agent-browser close
 使用 agent-browser 复用已保存的登录会话打开笔记：
 
 ```bash
-agent-browser --session-name xiaohongshu open "<URL>"
+agent-browser --profile ~/.agent-browser/xiaohongshu-profile open "<URL>"
 agent-browser wait --load networkidle
 ```
 

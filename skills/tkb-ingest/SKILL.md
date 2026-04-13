@@ -40,6 +40,7 @@ TKB 使用标签区分内容来源：
 ### 第一步：判断来源类型
 
 根据输入判断类型：
+- 包含 `xiaohongshu.com` 或 `xhslink.com` → **小红书笔记**，调用 `tkb-xiaohongshu` skill，传入 `SOURCE_TAG` 和 `URL`；skill 完成后继续第四步
 - 包含 `youtube.com` 或 `youtu.be` → YouTube 视频（Phase 2）
 - 包含 `bilibili.com` 或 `b23.tv` → Bilibili 视频（Phase 2）
 - 以 `http://` 或 `https://` 开头 → **网页**，进入第二步（网页流程）

@@ -201,6 +201,14 @@ mkdir -p "/Users/I333878/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/ra
 
 仅在来源类型为网页时执行。Git 来源已在第三步（Git）直接写入 raw，跳过此步骤。
 
+如来源类型为小红书，源目录在 `triage/xiaohongshu/` 下：
+
+```bash
+mv "triage/xiaohongshu/<目录名>" "raw/web/<目录名>"
+```
+
+如来源类型为普通网页，使用：
+
 ```bash
 mv "triage/web/<目录名>" "raw/web/<目录名>"
 ```

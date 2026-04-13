@@ -1,0 +1,16 @@
+{
+  "name": "tkb",
+  "description": "Personal Technical Knowledge Base skills for Claude Code",
+  "owner": {
+    "name": "Ted Teng",
+    "email": "sendme365@msn.com"
+  },
+  "plugins": [
+    {
+      "name": "tkb",
+      "source": "./",
+      "description": "TKB skills: ingest, query, lint, remove, link",
+      "version": "1.0.0"
+    }
+  ]
+}

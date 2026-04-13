@@ -1,0 +1,12 @@
+{
+  "name": "tkb",
+  "version": "1.0.0",
+  "description": "Personal Technical Knowledge Base - Obsidian-based knowledge management with Claude Code skills",
+  "author": {
+    "name": "Ted Teng",
+    "email": "sendme365@msn.com"
+  },
+  "repository": "https://github.com/sendme365/tkb",
+  "license": "MIT",
+  "keywords": ["knowledge-base", "obsidian", "wiki", "pkm", "notes"]
+}

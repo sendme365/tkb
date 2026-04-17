@@ -372,6 +372,8 @@ source_tag: "<SOURCE_TAG>"
 
 #### 6e. 更新反向链接
 
+**跳过条件：** 如果 6c 中新建/更新的 concept 文件的 `related` 字段为空（即无任何关联 concept），则跳过本步，不执行反向链接操作。
+
 1. 对于 6c/6d 中关联的所有 concept 和 analysis 文件，确保双向链接存在
 2. 使用 `obsidian-cli` 搜索并更新
 

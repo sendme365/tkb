@@ -1,6 +1,8 @@
 ---
 name: tkb-link
-description: Use when running /tkb-link to scan TKB knowledge base for missing or incomplete cross-concept associations, fix unidirectional links, and discover new relationships between concepts.
+description: >
+  TKB 知识库全局关联扫描。修复 related 字段中缺失的反向链接，发现新的跨概念关联。
+  触发词："tkb link", "关联扫描", "修复反向链接", "跨概念关联", "tkb-link"。
 ---
 
 # TKB Link

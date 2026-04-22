@@ -41,8 +41,8 @@ TKB 使用标签区分内容来源：
 
 根据输入判断类型：
 - 包含 `xiaohongshu.com` 或 `xhslink.com` → **小红书笔记**，调用 `tkb-xiaohongshu` skill，传入 `SOURCE_TAG` 和 `URL`；skill 完成后继续第四步
-- 包含 `youtube.com` 或 `youtu.be` → YouTube 视频（Phase 2）
-- 包含 `bilibili.com` 或 `b23.tv` → Bilibili 视频（Phase 2）
+- 包含 `youtube.com` 或 `youtu.be` → **YouTube 视频**，进入第二步（视频流程）
+- 包含 `bilibili.com` 或 `b23.tv` → **Bilibili 视频**，进入第二步（视频流程）
 - 以 `http://` 或 `https://` 开头 → **网页**，进入第二步（网页流程）
 - 以 `/` 开头且本地路径存在 `.git/` 子目录 → **本地 Git 仓库**，进入 Git 流程（第二步 Git 分支）
 - 以 `/` 开头但无 `.git/` → 单文件（Phase 2，提示用户）
@@ -164,6 +164,75 @@ type: git
 <提取的注释，按文件分组，每组前加 ### <文件路径> 标题>
 ```
 
+### 第二步（视频）：采集字幕内容
+
+仅在来源类型为 YouTube 或 Bilibili 时执行。
+
+#### 2v-a. 确定平台和路径变量
+
+```bash
+if echo "$URL" | grep -qE "(youtube\.com|youtu\.be)"; then PLATFORM="youtube"
+else PLATFORM="bilibili"; fi
+
+TKB_ROOT="/Users/I333878/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB"
+TODAY=$(date +%Y-%m-%d)
+```
+
+#### 2v-b. 调用 fetch_subtitle.sh
+
+先建临时目录（视频标题未知，占位用），再调用脚本：
+
+```bash
+SCRIPT="$HOME/.claude/plugins/marketplaces/tkb/scripts/fetch_subtitle.sh"
+TEMP_SLUG="$TODAY-fetching"
+TEMP_DIR="$TKB_ROOT/raw/video/$PLATFORM/$TEMP_SLUG"
+mkdir -p "$TEMP_DIR"
+
+RESULT=$(bash "$SCRIPT" "$URL" "$TEMP_DIR")
+EXIT_CODE=$?
+```
+
+退出码处理：
+- `4`：向用户报告"该视频无可用字幕，无法入库"，终止流程，删除 `$TEMP_DIR`
+- `5`：向用户报告 yt-dlp 错误，终止流程，删除 `$TEMP_DIR`
+- 其他非 `0`：报告错误信息，终止流程，删除 `$TEMP_DIR`
+
+#### 2v-c. 解析返回值
+
+用 `python3 -c` 解析 JSON（不依赖 jq）：
+
+```bash
+VIDEO_ID=$(echo "$RESULT"       | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['video_id'])")
+VIDEO_TITLE=$(echo "$RESULT"    | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['title'])")
+CHANNEL=$(echo "$RESULT"        | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['channel'])")
+DURATION=$(echo "$RESULT"       | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['duration'])")
+UPLOAD_DATE=$(echo "$RESULT"    | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['upload_date'])")
+DESCRIPTION=$(echo "$RESULT"    | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['description'])")
+SUB_LANG=$(echo "$RESULT"       | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['lang'])")
+TRANSCRIPT_REL=$(echo "$RESULT" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['transcript_file'])")
+```
+
+#### 2v-d. 生成正式目录名并重命名
+
+```bash
+TITLE_SLUG=$(echo "$VIDEO_TITLE" \
+  | tr '[:upper:]' '[:lower:]' \
+  | sed 's/[^a-z0-9]/-/g' \
+  | sed 's/-\+/-/g' \
+  | sed 's/^-//;s/-$//' \
+  | cut -c1-50)
+
+ENTRY_SLUG="$TODAY-$TITLE_SLUG"
+FINAL_DIR="$TKB_ROOT/raw/video/$PLATFORM/$ENTRY_SLUG"
+mv "$TEMP_DIR" "$FINAL_DIR"
+```
+
+#### 2v-e. 读取转录内容
+
+用 Read 工具读取 `$FINAL_DIR/$TRANSCRIPT_REL`，将内容存入 `TRANSCRIPT_CONTENT`，供第三步（视频）使用。
+
+---
+
 ### 第三步：写入 triage
 
 1. 生成目录名：`<YYYY-MM-DD>-<slug>`（slug 从标题生成，小写+连字符，取前 50 字符）
@@ -184,22 +253,70 @@ mkdir -p "/Users/I333878/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/ra
 
 注意：不需要 `images/` 子目录，git 仓库内容不含网页图片。
 
+### 第三步（视频）：直接写入 raw
+
+仅在来源类型为 YouTube 或 Bilibili 时执行。跳过 triage，直接写入 raw（字幕下载是确定性操作，无需人工审核）。
+
+目录已由 2v-d 创建于 `$FINAL_DIR`（`raw/video/<platform>/<ENTRY_SLUG>/`）。
+
+将 `UPLOAD_DATE`（格式 `YYYYMMDD`）转为 `YYYY-MM-DD`：
+```bash
+VIDEO_DATE="${UPLOAD_DATE:0:4}-${UPLOAD_DATE:4:2}-${UPLOAD_DATE:6:2}"
+```
+
+用 Write 工具写入 `$FINAL_DIR/index.md`：
+
+```markdown
+---
+title: "<VIDEO_TITLE>"
+source_url: "<URL>"
+source_type: "<PLATFORM>"
+channel: "<CHANNEL>"
+video_id: "<VIDEO_ID>"
+date: <VIDEO_DATE>
+duration: "<DURATION>"
+subtitles: ["<SUB_LANG>.srt"]
+type: video
+source_tag: "<SOURCE_TAG>"
+---
+
+# <VIDEO_TITLE>
+
+**来源 (Source)：** [<PLATFORM 大写>](<URL>)
+**频道 / 作者 (Channel)：** <CHANNEL>
+**日期 (Date)：** <VIDEO_DATE>　**时长 (Duration)：** <DURATION>
+
+## 视频描述 (Description)
+
+<DESCRIPTION>
+
+## 字幕文件 (Subtitle Files)
+
+- [[subtitles/<SUB_LANG>.srt|<SUB_LANG> 字幕 (SRT)]]
+
+## 转录内容 (Transcript)
+
+<TRANSCRIPT_CONTENT>
+```
+
 ### 第四步：去重检查
 
 1. 读取 `wiki/_index.md` 的内容
 2. 检查是否已存在相同 URL 或高度相似标题的条目
    - 网页来源：匹配 `source_url`
    - Git 来源：匹配 `source_url`（remote origin）；若为 `local-only`，匹配仓库路径
+   - 视频来源：匹配 `source_url`（完整 URL）或 `video_id`（防止 youtu.be/youtube.com 同一视频重复入库）
 3. 如果重复：
    - 告知用户已存在，问是否覆盖或跳过
    - 如果跳过：
      - 网页：删除 triage 中的文件
      - Git：删除 `raw/git/<目录名>/` 目录
+     - 视频：删除 `raw/video/<platform>/<目录名>/` 目录
 4. 如果不重复，继续
 
 ### 第五步：移动到 raw（仅网页来源）
 
-仅在来源类型为网页时执行。Git 来源已在第三步（Git）直接写入 raw，跳过此步骤。
+仅在来源类型为网页时执行。Git 来源已在第三步（Git）直接写入 raw，视频来源已在第三步（视频）直接写入 raw，跳过此步骤。
 
 如来源类型为小红书，源目录在 `triage/xiaohongshu/` 下：
 
@@ -217,13 +334,15 @@ mv "triage/web/<目录名>" "raw/web/<目录名>"
 
 这是核心步骤，一次性生成三层产出。
 
-#### 6a-pre. 图文联读（仅小红书来源）
+#### 6a-pre. 图文联读（仅小红书来源）/ 转录读取（仅视频来源）
 
-如来源类型为小红书，在开始编译前，使用 Read 工具依次读取 `raw/web/<目录名>/images/` 下所有文件：
+**小红书来源**：在开始编译前，使用 Read 工具依次读取 `raw/web/<目录名>/images/` 下所有文件：
 
 1. 读取 `index.md` 获取文字正文
 2. 用 Read 工具读取每张图片（`img-01.jpg`、`img-02.jpg`... 及 `screenshot.png`）
 3. Claude 综合图文内容进行分析，后续 6b/6c/6d 步骤中，核心观点和关键细节应**同时融合文字和图片中的信息**
+
+**视频来源（YouTube/Bilibili）**：在开始编译前，读取 `$FINAL_DIR/subtitles/transcript.txt`，将完整转录内容用于 6b/6c/6d 中的核心观点提取和分析。
 
 普通网页来源跳过此步骤。
 
@@ -259,6 +378,18 @@ mv "triage/web/<目录名>" "raw/web/<目录名>"
 - **摘要：** <从 README 自动提取项目描述，50-100字>
 - **相关概念：** [[concept-A]] [[concept-B]]
 - **Raw：** [[raw/git/<目录名>/index.md]]
+```
+
+**视频来源格式：**
+```markdown
+### <VIDEO_TITLE>
+- **来源：** [<platform>](<URL>)　**频道：** <CHANNEL>
+- **日期：** <VIDEO_DATE>　**时长：** <DURATION>
+- **标签：** #tag1 #tag2 #tag3
+- **来源分区：** <SOURCE_TAG>
+- **摘要：** <从转录内容提取核心要点，50-100字>
+- **相关概念：** [[concept-A]] [[concept-B]]
+- **Raw：** [[raw/video/<platform>/<目录名>/index.md]]
 ```
 
 标签提取规则：
@@ -319,9 +450,10 @@ source_tag: "<SOURCE_TAG>"
 5. 如果引入了新标签，追加到 `tags` 列表
 6. 使用 `obsidian-markdown` skill 确保格式正确
 
-注意：`sources` 路径根据来源类型选择 `web/` 或 `git/` 子目录：
+注意：`sources` 路径根据来源类型选择对应子目录：
 - 网页：`sources: "[[raw/web/<目录名>/index.md]]"`
 - Git：`sources: "[[raw/git/<目录名>/index.md]]"`
+- 视频：`sources: "[[raw/video/<platform>/<目录名>/index.md]]"`
 
 #### 6d. Analysis 层
 
@@ -366,9 +498,10 @@ source_tag: "<SOURCE_TAG>"
 
 注意：如果已存在同名 analysis 文件，追加新洞察而非覆盖。
 
-注意：`sources` 路径根据来源类型选择 `web/` 或 `git/` 子目录：
+注意：`sources` 路径根据来源类型选择对应子目录：
 - 网页：`sources: "[[raw/web/<目录名>/index.md]]"`
 - Git：`sources: "[[raw/git/<目录名>/index.md]]"`
+- 视频：`sources: "[[raw/video/<platform>/<目录名>/index.md]]"`
 
 #### 6e. 更新反向链接
 
@@ -397,6 +530,17 @@ source_tag: "<SOURCE_TAG>"
 - 入库文件：`raw/git/<目录名>/index.md`
 - 来源分区：`<SOURCE_TAG>`
 - 提取内容：README + N 个文档文件 + 代码注释 M 行
+- 创建/更新的 Index 条目
+- 创建/更新的 Concept：`wiki/concepts/<名>.md`
+- 创建的 Analysis：`wiki/analysis/<名>-analysis.md`
+- 关联的已有概念
+
+**视频来源（YouTube/Bilibili）：**
+- 入库文件：`raw/video/<platform>/<目录名>/index.md`
+- 字幕文件：`raw/video/<platform>/<目录名>/subtitles/<lang>.srt`
+- 转录文件：`raw/video/<platform>/<目录名>/subtitles/transcript.txt`
+- 字幕语言：`<SUB_LANG>`
+- 来源分区：`<SOURCE_TAG>`
 - 创建/更新的 Index 条目
 - 创建/更新的 Concept：`wiki/concepts/<名>.md`
 - 创建的 Analysis：`wiki/analysis/<名>-analysis.md`

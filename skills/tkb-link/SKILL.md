@@ -21,7 +21,7 @@ TKB 知识库根目录：`/Users/I333878/Library/Mobile Documents/com~apple~Clou
 
 ### 第一步：读取全库 Concept 列表
 
-读取 `wiki/concepts/*.md` 所有文件，逐一提取：
+用 `find wiki/concepts/ -name "*.md"` 扫描所有 concept 文件（含子目录），逐一提取：
 
 | 字段 | 用途 |
 |------|------|

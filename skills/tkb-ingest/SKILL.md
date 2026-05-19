@@ -409,10 +409,11 @@ mv "triage/web/<目录名>" "raw/web/<目录名>"
 **判断新概念 vs 已有概念：**
 在写入前，先用 Bash 检查是否已有同名 concept 文件（含子目录）：
 ```bash
-find "$TKB_ROOT/wiki/concepts" -name '<概念名>.md'
+SCRIPTS="$HOME/.claude/plugins/marketplaces/tkb/scripts"
+bash "$SCRIPTS/find_wiki.sh" concept '<概念名>'
 ```
-- 若找到文件 → **更新已有概念**（使用找到的实际路径，无论在哪个子目录）
-- 若未找到 → **新概念**，写入根目录 `wiki/concepts/<概念名>.md`
+- exit 0（找到）→ **更新已有概念**（使用输出的实际路径，无论在哪个子目录）
+- exit 2（未找到）→ **新概念**，写入根目录 `wiki/concepts/<概念名>.md`
 
 **如果是新概念：**
 创建 `wiki/concepts/<概念名>.md`：
@@ -468,10 +469,11 @@ source_tag: "<SOURCE_TAG>"
 **判断新建 vs 已有：**
 在写入前，先用 Bash 检查是否已有同名 analysis 文件（含子目录）：
 ```bash
-find "$TKB_ROOT/wiki/analysis" -name '<概念名>-analysis.md'
+SCRIPTS="$HOME/.claude/plugins/marketplaces/tkb/scripts"
+bash "$SCRIPTS/find_wiki.sh" analysis '<概念名>'
 ```
-- 若找到文件 → 追加新洞察到该文件（使用实际路径）
-- 若未找到 → 创建到根目录 `wiki/analysis/<概念名>-analysis.md`
+- exit 0（找到）→ 追加新洞察到该文件（使用输出的实际路径）
+- exit 2（未找到）→ 创建到根目录 `wiki/analysis/<概念名>-analysis.md`
 
 创建 `wiki/analysis/<概念名>-analysis.md`：
 

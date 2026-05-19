@@ -40,8 +40,8 @@ TKB 知识库根目录：`/Users/I333878/Library/Mobile Documents/com~apple~Clou
 
 1. 读取第一步定位到的 concept 文件：
    - 优先使用 Index 条目中记录的路径直接读取
-   - 若路径不存在（文件已移动到子目录），改用 `find wiki/concepts/ -name '<文件名>.md'` 定位实际路径，再读取
-2. 读取相关的 analysis 文件，同样方式定位：先用 Index 路径，失败则用 `find wiki/analysis/ -name '<文件名>-analysis.md'`
+   - 若路径不存在（文件已移动到子目录），改用 `bash "$SCRIPTS/find_wiki.sh" concept <文件名>`（`SCRIPTS="$HOME/.claude/plugins/marketplaces/tkb/scripts"`）定位实际路径，再读取
+2. 读取相关的 analysis 文件，同样方式定位：先用 Index 路径，失败则用 `bash "$SCRIPTS/find_wiki.sh" analysis <文件名>`
 3. 如果 `FILTER != all`，只读取 frontmatter 中 `source_tag: "#<FILTER>"` 的文件
 4. 基于 concept 和 analysis 的内容，尝试回答问题
 

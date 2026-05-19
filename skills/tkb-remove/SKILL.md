@@ -40,7 +40,7 @@ TKB 知识库根目录：`/Users/I333878/Library/Mobile Documents/com~apple~Clou
 ### 第四步：处理关联的 Concepts
 
 1. 从 raw 文件的 content 或 Index 条目中确定关联的 concept 文件名
-2. 用 `find wiki/concepts/ -name '<文件名>.md'` 定位 concept 文件实际路径（支持子目录）；如果 Index 中有路径记录但文件不存在，同样用 find 搜索
+2. 用 `bash "$SCRIPTS/find_wiki.sh" concept <文件名>`（`SCRIPTS="$HOME/.claude/plugins/marketplaces/tkb/scripts"`）定位 concept 文件实际路径（支持子目录）；如果 Index 中有路径记录但文件不存在，同样用此命令搜索
 3. 若未找到对应 concept 文件则跳过
 4. 对每个关联的 concept：
    a. 读取 concept 文件的 `sources` 字段
@@ -53,7 +53,7 @@ TKB 知识库根目录：`/Users/I333878/Library/Mobile Documents/com~apple~Clou
 
 ### 第五步：处理关联的 Analysis
 
-1. 用 `find wiki/analysis/ -name '*-analysis.md'` 结合 `grep -r '<raw路径>'` 递归搜索引用了该 raw 文件的 analysis（支持子目录）
+1. 用 `bash "$SCRIPTS/find_wiki.sh" analyses` 结合 `grep -r '<raw路径>'` 递归搜索引用了该 raw 文件的 analysis（支持子目录）
 2. 对每个关联的 analysis：
    a. 在文件中标注"来源已移除：`<raw路径>`"
    b. 不自动删除 analysis（分析可能仍有独立价值）

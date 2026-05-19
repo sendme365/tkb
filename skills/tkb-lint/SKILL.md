@@ -54,6 +54,38 @@ TKB 知识库根目录：`/Users/I333878/Library/Mobile Documents/com~apple~Clou
 3. 对每个条目的"相关概念"链接，检查对应的 concept 文件是否存在
 4. 如果发现断裂链接 → 标记并建议修复
 
+### 6. folder 字段同步检查
+
+1. 用 `find` 扫描 `wiki/concepts/` 和 `wiki/analysis/` 下所有 `.md` 文件（含子目录）
+2. 对每个文件，计算**期望 folder 值**：
+   - 文件在子目录（如 `wiki/concepts/gardener/xxx.md`）→ 期望 folder = 相对于 `concepts/` 或 `analysis/` 的子路径（如 `gardener`；二级子目录取完整相对路径如 `gardener/gep`）
+   - 文件在根目录（如 `wiki/concepts/xxx.md`）→ 期望 folder = 空（不应有此字段）
+3. 读取每个文件 frontmatter 的实际 `folder` 字段值
+4. 对比期望值 vs 实际值，收集不一致的文件
+5. 边界情况：
+   - 文件在根目录且无 `folder` 字段 → ✅ 正常，跳过
+   - 文件在根目录但有 `folder` 字段 → 报告为"需清除 folder"
+   - 文件在子目录且 `folder` 已正确设置 → ✅ 正常，跳过
+6. 若有不一致文件，在报告中展示变更提案，并询问用户是否立即同步：
+
+```
+## Folder 字段不同步
+
+以下文件的 `folder` 字段与实际所在目录不一致：
+
+| 文件 | 当前 folder | 期望 folder |
+|------|-------------|-------------|
+| [[gardener-robot]] | (未设置) | gardener |
+| [[agent-skills-vs-mcp]] | gardener | ai |
+
+共 N 个文件需要更新。是否立即同步？(y/n)
+```
+
+7. 用户回答 `y` 后，对每个不一致文件：
+   - 需要设置 folder → 使用 `obsidian-cli` 的 `property:set` 工具，设置 `folder` 为期望值
+   - 需要清除 folder → 使用 `obsidian-cli` 的 `property:set` 工具，将 `folder` 设为空字符串
+8. 同步完成后输出"已更新 N 个文件"
+
 ## 报告格式
 
 生成报告到 `output/lint-report-<YYYY-MM-DD>.md`：
@@ -74,6 +106,7 @@ type: lint-report
 - Analysis 总数：N
 - 无 source_tag 的 Concept：N
 - 无 source_tag 的 Analysis：N
+- folder 字段不同步：N 个文件
 - 发现问题：N
 
 ## 孤立概念
@@ -97,6 +130,14 @@ type: lint-report
 
 - Index 条目"<标题>"引用的 raw 目录不存在：`raw/web/<path>/`
 - ...
+
+## Folder 字段不同步
+
+（若无不同步文件则省略此章节）
+
+| 文件 | 当前 folder | 期望 folder |
+|------|-------------|-------------|
+| [[xxx]] | (未设置) | gardener |
 ```
 
 ## 注意事项

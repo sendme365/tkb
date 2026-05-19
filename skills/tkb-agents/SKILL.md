@@ -241,7 +241,7 @@ source_tag: "<SOURCE_TAG>"
 
 ### 6e. Analysis 层
 
-创建或追加 `${TKB_ROOT}/wiki/analysis/<concept-slug>-analysis.md`：
+创建或追加 `${TKB_ROOT}/wiki/analysis/<concept-slug>.md`：
 
 ```markdown
 ---
@@ -315,7 +315,7 @@ source_tag: "<SOURCE_TAG>"
   - 双语存档：raw/web/<ENTRY_SLUG>/index.md
   - 索引条目：wiki/_index.md (条目 #N)
   - 概念文件：wiki/concepts/<concept-slug>.md [新建/更新]
-  - 分析文件：wiki/analysis/<concept-slug>-analysis.md [新建/更新]
+  - 分析文件：wiki/analysis/<concept-slug>.md [新建/更新]
 
 inbox.md 已重置。
 ```

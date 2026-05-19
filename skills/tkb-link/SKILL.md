@@ -85,7 +85,7 @@ TKB 知识库根目录：`/Users/I333878/Library/Mobile Documents/com~apple~Clou
 1. 双向追加 `related` 字段（A 追加 B，B 追加 A）
 
 **新关联（弱）：**
-1. 在对应的 `wiki/analysis/<concept>-analysis.md` 的"跨概念关联"章节追加说明
+1. 在对应的 `wiki/analysis/<concept>.md` 的"跨概念关联"章节追加说明
 2. 如无 analysis 文件，跳过（不强制创建）
 
 ### 第五步：报告

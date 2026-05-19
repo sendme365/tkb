@@ -61,7 +61,7 @@ LLM 自行判断现有 wiki 内容是否足够回答问题：
 如果回答过程中产生了新的洞察或发现了知识库中缺失的关联：
 
 1. 询问用户是否要将新洞察写入知识库
-2. 如果用户同意，创建或更新 `wiki/analysis/<topic>-analysis.md`
+2. 如果用户同意，创建或更新 `wiki/analysis/<topic>.md`
 3. 使用 `obsidian-markdown` 确保格式正确
 
 ## 回答格式

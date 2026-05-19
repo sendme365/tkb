@@ -473,9 +473,9 @@ SCRIPTS="$HOME/.claude/plugins/marketplaces/tkb/scripts"
 bash "$SCRIPTS/find_wiki.sh" analysis '<概念名>'
 ```
 - exit 0（找到）→ 追加新洞察到该文件（使用输出的实际路径）
-- exit 2（未找到）→ 创建到根目录 `wiki/analysis/<概念名>-analysis.md`
+- exit 2（未找到）→ 创建到根目录 `wiki/analysis/<概念名>.md`
 
-创建 `wiki/analysis/<概念名>-analysis.md`：
+创建 `wiki/analysis/<概念名>.md`：
 
 ```markdown
 ---
@@ -541,7 +541,7 @@ source_tag: "<SOURCE_TAG>"
 - 来源分区：`<SOURCE_TAG>`
 - 创建/更新的 Index 条目
 - 创建/更新的 Concept：`wiki/concepts/<名>.md`
-- 创建的 Analysis：`wiki/analysis/<名>-analysis.md`
+- 创建的 Analysis：`wiki/analysis/<名>.md`
 - 关联的已有概念
 
 **Git 仓库来源：**
@@ -550,7 +550,7 @@ source_tag: "<SOURCE_TAG>"
 - 提取内容：README + N 个文档文件 + 代码注释 M 行
 - 创建/更新的 Index 条目
 - 创建/更新的 Concept：`wiki/concepts/<名>.md`
-- 创建的 Analysis：`wiki/analysis/<名>-analysis.md`
+- 创建的 Analysis：`wiki/analysis/<名>.md`
 - 关联的已有概念
 
 **视频来源（YouTube/Bilibili）：**
@@ -561,7 +561,7 @@ source_tag: "<SOURCE_TAG>"
 - 来源分区：`<SOURCE_TAG>`
 - 创建/更新的 Index 条目
 - 创建/更新的 Concept：`wiki/concepts/<名>.md`
-- 创建的 Analysis：`wiki/analysis/<名>-analysis.md`
+- 创建的 Analysis：`wiki/analysis/<名>.md`
 - 关联的已有概念
 
 ## 使用 obsidian-markdown

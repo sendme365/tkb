@@ -48,9 +48,7 @@ case "$CMD" in
   analysis)
     [[ $# -lt 2 ]] && { echo "Error: analysis name required" >&2; exit 1; }
     NAME="$2"
-    # support both "<name>" and "<name>-analysis" as input
-    BASENAME="${NAME%-analysis}"
-    RESULT=$(find "$ANALYSES_DIR" -name "${BASENAME}-analysis.md" | head -1)
+    RESULT=$(find "$ANALYSES_DIR" -name "${NAME}.md" | head -1)
     if [[ -n "$RESULT" ]]; then
       echo "$RESULT"
       exit 0

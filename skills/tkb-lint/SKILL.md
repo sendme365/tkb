@@ -18,7 +18,7 @@ TKB 知识库根目录：`/Users/I333878/Library/Mobile Documents/com~apple~Clou
 
 ### 1. 孤立 Concept 检测
 
-1. 列出 `wiki/concepts/` 中所有 concept 文件
+1. 用 `find wiki/concepts/ -name "*.md"` 列出所有 concept 文件（含子目录）
 2. 对每个 concept，检查是否有其他 concept 或 analysis 文件通过 `[[wikilink]]` 引用它
 3. 检查 `wiki/_index.md` 的"相关概念"字段是否引用了它
 4. 如果一个 concept 没有被任何其他文件引用 → 标记为"孤立概念"
@@ -27,7 +27,7 @@ TKB 知识库根目录：`/Users/I333878/Library/Mobile Documents/com~apple~Clou
 ### 2. 标签一致性检查
 
 1. 从 `wiki/_index.md` 中提取所有标签
-2. 从 `wiki/concepts/*.md` 的 frontmatter `tags` 字段中提取所有标签
+2. 用 `find wiki/concepts/ -name "*.md"` 扫描所有 concept 文件（含子目录），提取 frontmatter `tags` 字段中的标签
 3. 检测可能的不一致：
    - 同义词标签（如 `#AI` vs `#人工智能`，`#LLM` vs `#大语言模型`）
    - 大小写不一致（如 `#python` vs `#Python`）
@@ -36,8 +36,8 @@ TKB 知识库根目录：`/Users/I333878/Library/Mobile Documents/com~apple~Clou
 
 ### 3. 来源标签完整性检查
 
-1. 检查所有 `wiki/concepts/*.md` 文件是否有 `source_tag` frontmatter 字段
-2. 检查所有 `wiki/analysis/*.md` 文件是否有 `source_tag` frontmatter 字段
+1. 用 `find wiki/concepts/ -name "*.md"` 扫描所有 concept 文件（含子目录），检查是否有 `source_tag` frontmatter 字段
+2. 用 `find wiki/analysis/ -name "*.md"` 扫描所有 analysis 文件（含子目录），检查是否有 `source_tag` frontmatter 字段
 3. 验证 `source_tag` 值只能为 `#work` 或 `#ttt`
 4. 无 `source_tag` 或值非法的文件 → 标记并建议修复
 

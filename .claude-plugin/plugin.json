@@ -8,5 +8,11 @@
   },
   "repository": "https://github.com/sendme365/tkb",
   "license": "MIT",
-  "keywords": ["knowledge-base", "obsidian", "wiki", "pkm", "notes"]
+  "keywords": [
+    "knowledge-base",
+    "obsidian",
+    "wiki",
+    "pkm",
+    "notes"
+  ]
 }

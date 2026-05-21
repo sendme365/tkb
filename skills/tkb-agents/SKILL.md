@@ -1,10 +1,12 @@
 ---
 name: tkb-agents
+manual_only: true
 description: >
   TKB 知识库文章入库（粘贴模式）。将用户粘贴到 inbox.md 的英文文章翻译为中文，
   生成双语存档和讲义式笔记，并编译进知识库（Index + Concept + Analysis）。
   触发词："tkb agents", "入库粘贴", "处理inbox", "tkb-agents"。
   输入：[work|ttt]。内容来自 /Users/I333878/SAPDevelop/Work/agent-summary/inbox.md。
+  ⚠️ 此 skill 仅限用户手动触发，禁止被其他 skill 或 agent 自动调用。
 ---
 
 # TKB Agents — 粘贴入库 (Paste Ingest)
@@ -147,7 +149,7 @@ lang_translated: "zh"
 
 **Register B — 叙述式理解总结（用于 Concept 层正文）**
 
-- 流畅中文段落，每段 300-500 字
+- 流畅中文段落，每段 300-1000 字
 - 第一人称视角："这篇文章让我理解了..."、"作者的核心论点是..."
 - 像个人读书笔记，而非干燥摘要
 - 每个核心概念一段

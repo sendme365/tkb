@@ -406,6 +406,11 @@ mv "triage/web/<目录名>" "raw/web/<目录名>"
 
 使用 `obsidian-cli` 创建或更新 concept 文件。
 
+**原则：新建 concept 数量 = 用户提供的链接数量。**
+- 用户提供 1 个链接 → 新建 1 个 concept；提供 N 个链接 → 新建 N 个 concept（一一对应）
+- 禁止从单篇原文中拆分出多个 concept；背景知识、子概念、相关组件一律写入该原文对应的 concept 文件内
+- 已有 concept 的更新不受此限制
+
 **判断新概念 vs 已有概念：**
 在写入前，先用 Bash 检查是否已有同名 concept 文件（含子目录）：
 ```bash

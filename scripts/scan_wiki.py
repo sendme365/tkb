@@ -9,7 +9,7 @@ import os
 
 TKB = os.environ.get(
     "TKB_ROOT",
-    "/Users/I333878/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB",
+    "$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB",
 )
 
 

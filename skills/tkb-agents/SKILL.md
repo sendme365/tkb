@@ -5,7 +5,7 @@ description: >
   TKB 知识库文章入库（粘贴模式）。将用户粘贴到 inbox.md 的英文文章翻译为中文，
   生成双语存档和讲义式笔记，并编译进知识库（Index + Concept + Analysis）。
   触发词："tkb agents", "入库粘贴", "处理inbox", "tkb-agents"。
-  输入：[work|ttt]。内容来自 /Users/I333878/SAPDevelop/Work/agent-summary/inbox.md。
+  输入：[work|ttt]。内容来自 ~/SAPDevelop/Work/agent-summary/inbox.md。
   ⚠️ 此 skill 仅限用户手动触发，禁止被其他 skill 或 agent 自动调用。
 ---
 
@@ -16,8 +16,8 @@ description: >
 ## 仓库位置
 
 ```
-TKB_ROOT  = /Users/I333878/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB
-INBOX     = /Users/I333878/SAPDevelop/Work/agent-summary/inbox.md
+TKB_ROOT  = $HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB
+INBOX     = ~/SAPDevelop/Work/agent-summary/inbox.md
 ```
 
 ## 第零步：解析来源标签
@@ -34,7 +34,7 @@ INBOX     = /Users/I333878/SAPDevelop/Work/agent-summary/inbox.md
 
 ## 第一步：读取并验证 inbox
 
-1. 使用 Read 工具读取 `INBOX`（即 `/Users/I333878/SAPDevelop/Work/agent-summary/inbox.md`）
+1. 使用 Read 工具读取 `INBOX`（即 `~/SAPDevelop/Work/agent-summary/inbox.md`）
 2. 如果文件不存在、内容为空，或仅包含以下哨兵占位符注释则终止，提示"请先将文章内容粘贴到 inbox.md，再运行 /tkb-agents"：
    ```
    <!-- tkb-agents inbox — paste article content below this line, then run /tkb-agents [work|ttt] -->

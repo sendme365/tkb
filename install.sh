@@ -7,7 +7,7 @@
 # Usage:
 #   bash ~/.claude/plugins/marketplaces/tkb/install.sh [--vault-path /path/to/vault]
 #
-# Default vault path: ~/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB
+# Default vault path: $HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB
 
 set -euo pipefail
 

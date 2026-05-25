@@ -12,7 +12,7 @@ description: >
 
 ## 仓库位置
 
-TKB 知识库根目录：`/Users/I333878/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/`
+TKB 知识库根目录：`$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/`
 
 ## 来源过滤
 

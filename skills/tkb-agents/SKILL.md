@@ -131,11 +131,13 @@ lang_translated: "zh"
    - 告知用户已存在，问是否覆盖或跳过
    - 如果跳过：删除 `RAW_DIR`，终止流程
 
-## 第六步：生成讲义三层寄存器并编译 wiki
+## 第六步：生成讲义寄存器并编译 wiki
 
 ### 6a. 生成三种讲义寄存器
 
-**Register A — 康奈尔式结构摘要（用于 Index 层）**
+在执行编译前，先基于翻译内容生成三种寄存器，供后续步骤使用：
+
+**Register A — 康奈尔式结构摘要（用于 Index 层摘要字段）**
 
 ```
 **核心主题 (Core Theme)：** <一句话概括文章核心>
@@ -147,7 +149,7 @@ lang_translated: "zh"
 **实践意义 (Practical Takeaway)：** <一句话实践启示>
 ```
 
-**Register B — 叙述式理解总结（用于 Concept 层正文）**
+**Register B — 叙述式理解总结（用于 Concept 层"核心观点"正文）**
 
 - 流畅中文段落，每段 300-1000 字
 - 第一人称视角："这篇文章让我理解了..."、"作者的核心论点是..."
@@ -164,132 +166,21 @@ lang_translated: "zh"
   A: <证明理解的答案>
   ```
 
-### 6b. 读取已有知识库状态
+### 6b. 共用编译流程
 
-1. 读取 `${TKB_ROOT}/wiki/_index.md` 获取已有条目和标签
-2. 使用 `obsidian-cli` 搜索 `wiki/concepts/` 中是否有相关概念
-3. 使用 `obsidian-cli` 搜索 `wiki/analysis/` 中是否有相关分析
+读取并执行 `$INGEST_REFS/wiki-compilation.md`（`INGEST_REFS="$HOME/.claude/plugins/marketplaces/tkb/skills/tkb-ingest/references"`），其中包含完整的三层编译步骤（Index 层、Concept 层、Analysis 层、反向链接更新）。
 
-### 6c. Index 层
+执行时的特殊适配：
+- 来源类型为 `paste`，Index 层摘要字段填入 **Register A** 内容
+- Concept 层"核心观点"正文填入 **Register B** 内容
+- 跳过 `6a-pre`（图文联读/转录读取，仅适用于小红书和视频来源）
+- Index 层来源格式使用 `[paste] 粘贴输入`，标题格式为 `<ARTICLE_TITLE_EN> | <ARTICLE_TITLE_ZH>`
 
-追加到 `${TKB_ROOT}/wiki/_index.md` 的"最近入库"部分：
+### 6c. Paste 专有追加
 
-```markdown
-### <ARTICLE_TITLE_EN> | <ARTICLE_TITLE_ZH>
-- **来源：** [paste] 粘贴输入
-- **日期：** <YYYY-MM-DD>
-- **标签：** #tag1 #tag2 #tag3
-- **来源分区：** <SOURCE_TAG>
-- **摘要：** <Register A 内容>
-- **相关概念：** [[concept-A]] [[concept-B]]
-- **Raw：** [[raw/web/<ENTRY_SLUG>/index.md]]
-```
-
-标签提取规则：
-- 从文章内容中自动提取 3-5 个核心标签
-- 优先复用 `wiki/_index.md` 中已出现的标签
-- 新标签使用 Obsidian 嵌套格式：`#大类/子类`（如 `#AI/LLM`）
-
-### 6d. Concept 层
-
-使用 `obsidian-cli` 创建或更新 `${TKB_ROOT}/wiki/concepts/<concept-slug>.md`。
-
-**如果是新概念：**
-
-```markdown
----
-title: <概念名>
-tags: [<tag1>, <tag2>]
-related: "[[<相关concept>]]"
-sources: "[[raw/web/<ENTRY_SLUG>/index.md]]"
-created: <YYYY-MM-DD>
-updated: <YYYY-MM-DD>
-type: concept
-source_tag: "<SOURCE_TAG>"
----
-
-# <概念名>
-
-## 核心观点 (Core Understanding)
-
-<Register B — 叙述式理解段落>
-
-## 关键术语 (Key Terms)
-
-| English | 中文 | 说明 |
-|---------|------|------|
-| Term1 | 术语1 | <简短说明> |
-| Term2 | 术语2 | <简短说明> |
-
-## 行动项 / 收获 (Takeaways)
-
-<读完文章后可采取的行动或获得的认识>
-
-## 来源 (Sources)
-
-- [[raw/web/<ENTRY_SLUG>/index.md|<ARTICLE_TITLE_EN>]]
-
-<SOURCE_TAG>
-```
-
-**如果更新已有概念：**
-
-1. 读取已有 concept 文件
-2. 在"核心观点"部分追加新内容（不删除已有内容）
-3. 在"关键术语"表追加新术语（去重）
-4. 在"来源"部分追加新 raw 链接
-5. 更新 `updated` 日期
-6. 追加新标签到 `tags` 列表
-
-### 6e. Analysis 层
-
-创建或追加 `${TKB_ROOT}/wiki/analysis/<concept-slug>.md`：
-
-```markdown
----
-title: "<概念名>" 深度分析
-tags: [<tag1>, <tag2>]
-concepts: "[[<concept名>]]"
-related_analysis: "[[<相关analysis>]]"
-sources: "[[raw/web/<ENTRY_SLUG>/index.md]]"
-created: <YYYY-MM-DD>
-type: analysis
-source_tag: "<SOURCE_TAG>"
----
-
-# <概念名> 深度分析
-
-## 复习问答 (Review Q&A)
-
-<Register C — 问答对>
-
-## 批判性思考 (Critical Analysis)
-
-<对原文观点的批判性评估：优点、局限、适用边界>
-
-## 跨概念关联 (Cross-Concept Links)
-
-<与知识库中其他概念的关系：
-- [[concept-A]]：...
-- [[concept-B]]：...
->
-
-## 知识图谱建议 (Knowledge Graph Suggestions)
-
-<建议后续探索的方向或需补充的知识>
-
-## 开放问题 (Open Questions)
-
-<文章引发但未回答的问题>
-
-<SOURCE_TAG>
-```
-
-如果 analysis 文件已存在，在"复习问答"和"批判性思考"部分追加新内容，不覆盖。
-
-### 6f. 更新反向链接
-
-如果 6d 中 concept 的 `related` 字段非空，确保双向链接存在（使用 `obsidian-cli` 搜索并更新相关文件）。
+读取并执行 `references/paste-extras.md`，在共用编译生成的 concept 和 analysis 文件上追加 paste 模式专有内容：
+- Concept：追加"关键术语 (Key Terms)"双语表（来自 Register A 中的术语列表）
+- Analysis：追加"复习问答 (Review Q&A)"（来自 Register C）
 
 ## 第七步：更新索引元数据
 

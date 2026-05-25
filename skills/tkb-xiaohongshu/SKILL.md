@@ -5,6 +5,9 @@ description: >
   存入 TKB 知识库并编译 wiki。
   触发词：由 tkb-ingest 内部调用，或直接使用 "tkb xiaohongshu", "小红书入库"。
   输入：<SOURCE_TAG> <小红书URL>
+compatibility:
+  required_tools:
+    - agent-browser  # 浏览器自动化（登录态抓取）
 ---
 
 # TKB Xiaohongshu Ingest

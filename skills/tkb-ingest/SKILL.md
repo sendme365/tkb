@@ -433,6 +433,7 @@ created: <YYYY-MM-DD>
 updated: <YYYY-MM-DD>
 type: concept
 source_tag: "<SOURCE_TAG>"
+folder: <子目录名（若在根目录则留空）>
 ---
 
 # <概念名>
@@ -492,6 +493,7 @@ sources: "[[raw/<web 或 git>/<目录名>/index.md]]"
 created: <YYYY-MM-DD>
 type: analysis
 source_tag: "<SOURCE_TAG>"
+folder: <子目录名（若在根目录则留空）>
 ---
 
 # <概念名> 深度分析

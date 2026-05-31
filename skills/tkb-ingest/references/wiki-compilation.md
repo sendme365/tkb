@@ -252,7 +252,7 @@ folder: <子目录名（若在根目录则留空）>
 在 6c 创建/更新 concept 后，使用 Write 工具在以下路径创建费曼笔记：
 
 ```
-$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/feynman/<YYYY-MM-DD>-<concept-slug>.md
+$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB/feynman/<YYYY-MM-DD>-<concept-slug>.md
 ```
 
 其中：

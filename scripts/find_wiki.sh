@@ -14,7 +14,7 @@
 
 set -euo pipefail
 
-TKB_ROOT="${TKB_ROOT:-$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB}"
+TKB_ROOT="${TKB_ROOT:-$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB}"
 CONCEPTS_DIR="$TKB_ROOT/wiki/concepts"
 ANALYSES_DIR="$TKB_ROOT/wiki/analysis"
 

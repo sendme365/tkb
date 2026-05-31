@@ -16,7 +16,7 @@ description: >
 ## 仓库位置
 
 ```
-TKB_ROOT  = $HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB
+TKB_ROOT  = $HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB
 INBOX     = ~/SAPDevelop/Work/agent-summary/inbox.md
 ```
 

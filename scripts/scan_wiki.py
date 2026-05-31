@@ -9,7 +9,7 @@ import os
 
 TKB = os.environ.get(
     "TKB_ROOT",
-    "$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB",
+    os.path.expanduser("~/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB"),
 )
 
 

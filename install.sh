@@ -7,12 +7,12 @@
 # Usage:
 #   bash ~/.claude/plugins/marketplaces/tkb/install.sh [--vault-path /path/to/vault]
 #
-# Default vault path: $HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB
+# Default vault path: $HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB
 
 set -euo pipefail
 
 # ── Argument parsing ──────────────────────────────────────────────────────────
-DEFAULT_VAULT="${HOME}/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB"
+DEFAULT_VAULT="${HOME}/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB"
 VAULT="${DEFAULT_VAULT}"
 
 while [[ $# -gt 0 ]]; do

@@ -16,7 +16,7 @@ compatibility:
 
 ## 仓库位置
 
-TKB 知识库根目录：`$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/`
+TKB 知识库根目录：`$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB/`
 
 ## 前置条件：首次登录
 
@@ -100,7 +100,7 @@ agent-browser get text body
 1. 生成 slug：将 `NOTE_TITLE` 转为小写 + 连字符，去除特殊字符，截取前 50 字符
 2. 生成目录名：`<YYYY-MM-DD>-<slug>`（日期用系统日期，格式 `date +%Y-%m-%d`）
 3. 设置路径变量：
-   - `TRIAGE_DIR` = `$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/triage/xiaohongshu/<目录名>`
+   - `TRIAGE_DIR` = `$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB/triage/xiaohongshu/<目录名>`
    - `IMAGES_DIR` = `<TRIAGE_DIR>/images`
 
 创建目录：

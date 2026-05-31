@@ -11,7 +11,7 @@ description: >
 
 ## 仓库位置
 
-TKB 知识库根目录：`$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/`
+TKB 知识库根目录：`$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB/`
 
 ## 设计原则
 

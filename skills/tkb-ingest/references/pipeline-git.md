@@ -109,7 +109,7 @@ type: git
 3. 使用 Write 工具将 2g-c 中组装的 markdown 写入 `raw/git/<目录名>/index.md`
 
 ```bash
-mkdir -p "$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/raw/git/<目录名>"
+mkdir -p "$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB/raw/git/<目录名>"
 ```
 
 注意：不需要 `images/` 子目录，git 仓库内容不含网页图片。

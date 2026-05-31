@@ -12,7 +12,7 @@ description: >
 
 ## 仓库位置
 
-TKB 知识库根目录：`$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/`
+TKB 知识库根目录：`$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB/`
 
 ## 流程
 
@@ -64,10 +64,10 @@ TKB 知识库根目录：`$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB
 
 ```bash
 # 网页来源
-rm -rf "$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/raw/web/<目录名>"
+rm -rf "$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB/raw/web/<目录名>"
 
 # Git 来源
-rm -rf "$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB/raw/git/<目录名>"
+rm -rf "$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB/raw/git/<目录名>"
 ```
 
 ### 第七步：报告结果

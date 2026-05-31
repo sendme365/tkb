@@ -10,7 +10,7 @@
 if echo "$URL" | grep -qE "(youtube\.com|youtu\.be)"; then PLATFORM="youtube"
 else PLATFORM="bilibili"; fi
 
-TKB_ROOT="$HOME/Library/Mobile Documents/com~apple~CloudDocs/TKB/TKB"
+TKB_ROOT="$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB"
 TODAY=$(date +%Y-%m-%d)
 ```
 

@@ -1,5 +1,5 @@
 ---
-name: tkb-bookmark
+name: bookmark
 description: >
   收藏书签到 TKB vault。触发词：bookmark、书签、收藏。
   输入格式：bookmark <URL> <一句话描述>

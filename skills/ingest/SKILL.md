@@ -1,8 +1,8 @@
 ---
-name: tkb-ingest
+name: ingest
 description: >
   TKB 知识库资料入库。将外部资料采集到知识库中，并打上来源标签（#work 或 #ttt）。
-  触发词："tkb ingest", "入库", "添加到知识库", "收录", "tkb-ingest"。
+  触发词："入库", "添加到知识库", "收录"。
   输入：[<来源标签>] <URL或文件路径>。来源标签可选，未指定时交互提示（必选）。
 ---
 
@@ -83,36 +83,65 @@ test -d "<用户输入路径>/.git" && echo "valid git repo" || echo "not a git 
 
 更新 `wiki/_index.md` 的 frontmatter 中 `updated` 和 `total_entries` 字段。
 
+### 第七点五步：追加入库日志
+
+使用 Read 工具读取 `${TKB_ROOT}/output/ingest-log.md`，然后用 Edit 工具在文件顶部的 `---` 分隔线之后、已有条目之前插入新记录：
+
+```markdown
+## <YYYY-MM-DD> — ingest
+
+| 字段 | 值 |
+|------|-----|
+| **技能** | `ingest` |
+| **来源分区** | `<SOURCE_TAG>` |
+| **原文标题** | <标题> |
+| **来源 URL** | `<URL>` |
+| **词条目录** | `raw/<web\|video\|git>/<ENTRY_SLUG>/` |
+
+**产出文件：**
+
+- [[raw/<web\|video\|git>/<ENTRY_SLUG>/index]] — 新建（原始存档）
+- [[wiki/_index]] — 更新（条目 #N）
+- [[wiki/concepts/<folder>/<concept-slug>]] — 新建/更新（概念）
+- [[wiki/analysis/<folder>/<concept-slug>]] — 新建/更新（分析）
+- [[feynman/<YYYY-MM-DD>-<concept-slug>]] — 新建（费曼笔记）
+
+---
+
+```
+
+> 注意：产出文件列表必须使用 `[[wikilink]]` 格式（不含 `.md` 后缀），确保在 Obsidian 中可点击跳转。如果 concept/analysis 文件在根目录下（无子目录），省略 `<folder>/`。视频来源路径含平台子目录：`raw/video/<platform>/<ENTRY_SLUG>/index`。
+
 ### 第八步：报告结果
 
-向用户报告：
+向用户报告（产出文件使用 `[[wikilink]]` 格式）：
 
 **网页来源：**
-- 入库文件：`raw/web/<目录名>/index.md`
+- 入库文件：`[[raw/web/<目录名>/index]]`
 - 来源分区：`<SOURCE_TAG>`
 - 创建/更新的 Index 条目
-- 创建/更新的 Concept：`wiki/concepts/<名>.md`
-- 创建的 Analysis：`wiki/analysis/<名>.md`
+- 创建/更新的 Concept：`[[wiki/concepts/<folder>/<名>]]`
+- 创建的 Analysis：`[[wiki/analysis/<folder>/<名>]]`
 - 关联的已有概念
 
 **Git 仓库来源：**
-- 入库文件：`raw/git/<目录名>/index.md`
+- 入库文件：`[[raw/git/<目录名>/index]]`
 - 来源分区：`<SOURCE_TAG>`
 - 提取内容：README + N 个文档文件 + 代码注释 M 行
 - 创建/更新的 Index 条目
-- 创建/更新的 Concept：`wiki/concepts/<名>.md`
-- 创建的 Analysis：`wiki/analysis/<名>.md`
+- 创建/更新的 Concept：`[[wiki/concepts/<folder>/<名>]]`
+- 创建的 Analysis：`[[wiki/analysis/<folder>/<名>]]`
 - 关联的已有概念
 
 **视频来源（YouTube/Bilibili）：**
-- 入库文件：`raw/video/<platform>/<目录名>/index.md`
+- 入库文件：`[[raw/video/<platform>/<目录名>/index]]`
 - 字幕文件：`raw/video/<platform>/<目录名>/subtitles/<lang>.srt`
 - 转录文件：`raw/video/<platform>/<目录名>/subtitles/transcript.txt`
 - 字幕语言：`<SUB_LANG>`
 - 来源分区：`<SOURCE_TAG>`
 - 创建/更新的 Index 条目
-- 创建/更新的 Concept：`wiki/concepts/<名>.md`
-- 创建的 Analysis：`wiki/analysis/<名>.md`
+- 创建/更新的 Concept：`[[wiki/concepts/<folder>/<名>]]`
+- 创建的 Analysis：`[[wiki/analysis/<folder>/<名>]]`
 - 关联的已有概念
 
 ## 使用 obsidian-markdown

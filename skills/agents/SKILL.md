@@ -1,10 +1,10 @@
 ---
-name: tkb-agents
+name: agents
 manual_only: true
 description: >
   TKB 知识库文章入库（粘贴模式）。将用户粘贴到 inbox.md 的英文文章翻译为中文，
   生成双语存档和讲义式笔记，并编译进知识库（Index + Concept + Analysis）。
-  触发词："tkb agents", "入库粘贴", "处理inbox", "tkb-agents"。
+  触发词："入库粘贴", "处理inbox"。
   输入：[work|ttt]。内容来自 ~/SAPDevelop/Work/agent-summary/inbox.md。
   ⚠️ 此 skill 仅限用户手动触发，禁止被其他 skill 或 agent 自动调用。
 ---
@@ -35,9 +35,9 @@ INBOX     = ~/SAPDevelop/Work/agent-summary/inbox.md
 ## 第一步：读取并验证 inbox
 
 1. 使用 Read 工具读取 `INBOX`（即 `~/SAPDevelop/Work/agent-summary/inbox.md`）
-2. 如果文件不存在、内容为空，或仅包含以下哨兵占位符注释则终止，提示"请先将文章内容粘贴到 inbox.md，再运行 /tkb-agents"：
+2. 如果文件不存在、内容为空，或仅包含以下哨兵占位符注释则终止，提示"请先将文章内容粘贴到 inbox.md，再运行 /agents"：
    ```
-   <!-- tkb-agents inbox — paste article content below this line, then run /tkb-agents [work|ttt] -->
+   <!-- agents inbox — paste article content below this line, then run /agents [work|ttt] -->
    ```
 3. 提取可选标题提示：如果第一行为 `<!-- title: ... -->`，将 `...` 作为 `ARTICLE_TITLE_EN`
 4. 否则从内容中推断标题：优先取第一个 H1（`# Title`），其次取第一个非空行
@@ -168,7 +168,7 @@ lang_translated: "zh"
 
 ### 6b. 共用编译流程
 
-读取并执行 `$INGEST_REFS/wiki-compilation.md`（`INGEST_REFS="$HOME/.claude/plugins/marketplaces/tkb/skills/tkb-ingest/references"`），其中包含完整的三层编译步骤（Index 层、Concept 层、Analysis 层、反向链接更新）。
+读取并执行 `$INGEST_REFS/wiki-compilation.md`（`INGEST_REFS="$HOME/.claude/plugins/marketplaces/tkb/skills/ingest/references"`），其中包含完整的三层编译步骤（Index 层、Concept 层、Analysis 层、反向链接更新）。
 
 执行时的特殊适配：
 - 来源类型为 `paste`，Index 层摘要字段填入 **Register A** 内容
@@ -191,10 +191,39 @@ lang_translated: "zh"
 使用 Write 工具将以下哨兵内容写入 `INBOX`：
 
 ```markdown
-<!-- tkb-agents inbox — paste article content below this line, then run /tkb-agents [work|ttt] -->
+<!-- agents inbox — paste article content below this line, then run /agents [work|ttt] -->
 ```
 
-## 第九步：报告结果
+## 第九步：追加入库日志
+
+使用 Read 工具读取 `${TKB_ROOT}/output/ingest-log.md`，然后用 Edit 工具在文件顶部的 `---` 分隔线之后、已有条目之前插入新记录：
+
+```markdown
+## <YYYY-MM-DD> — agents
+
+| 字段 | 值 |
+|------|-----|
+| **技能** | `agents` |
+| **来源分区** | `<SOURCE_TAG>` |
+| **原文标题** | <ARTICLE_TITLE_EN> |
+| **中文标题** | <ARTICLE_TITLE_ZH> |
+| **词条目录** | `raw/web/<ENTRY_SLUG>/` |
+
+**产出文件：**
+
+- [[raw/web/<ENTRY_SLUG>/index]] — 新建（双语存档）
+- [[wiki/_index]] — 更新（条目 #N）
+- [[wiki/concepts/<folder>/<concept-slug>]] — 新建/更新（概念）
+- [[wiki/analysis/<folder>/<concept-slug>]] — 新建/更新（分析）
+- [[feynman/<YYYY-MM-DD>-<concept-slug>]] — 新建（费曼笔记）
+
+---
+
+```
+
+> 注意：产出文件列表必须使用 `[[wikilink]]` 格式（不含 `.md` 后缀），确保在 Obsidian 中可点击跳转。如果 concept/analysis 文件在根目录下（无子目录），省略 `<folder>/`。
+
+## 第十步：报告结果
 
 ```
 入库完成 (Ingestion Complete)
@@ -205,10 +234,11 @@ lang_translated: "zh"
 词条目录：raw/web/<ENTRY_SLUG>/
 
 产出文件：
-  - 双语存档：raw/web/<ENTRY_SLUG>/index.md
-  - 索引条目：wiki/_index.md (条目 #N)
-  - 概念文件：wiki/concepts/<concept-slug>.md [新建/更新]
-  - 分析文件：wiki/analysis/<concept-slug>.md [新建/更新]
+  [[raw/web/<ENTRY_SLUG>/index]] — 双语存档
+  [[wiki/_index]] — 索引（条目 #N）
+  [[wiki/concepts/<folder>/<concept-slug>]] — 概念 [新建/更新]
+  [[wiki/analysis/<folder>/<concept-slug>]] — 分析 [新建/更新]
+  [[feynman/<YYYY-MM-DD>-<concept-slug>]] — 费曼笔记
 
 inbox.md 已重置。
 ```

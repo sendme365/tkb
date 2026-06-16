@@ -1,12 +1,12 @@
 # Paste 模式追加内容
 
-此文件由 `tkb-agents` 在 wiki-compilation.md 编译完成后执行，为 paste（粘贴翻译）来源追加讲义专有内容。
+此文件由 `agents` 在 wiki-compilation.md 编译完成后执行，为 paste（粘贴翻译）来源追加讲义专有内容。
 
 ## 前置条件
 
 执行此文件前，`wiki-compilation.md` 的第六步（全量编译）已完成，concept 和 analysis 文件已创建或更新。
 
-`ARTICLE_TITLE_EN`、`ENTRY_SLUG`、三种 Register（A/B/C）均已在 `tkb-agents` 的前序步骤中生成。
+`ARTICLE_TITLE_EN`、`ENTRY_SLUG`、三种 Register（A/B/C）均已在 `agents` 的前序步骤中生成。
 
 ---
 

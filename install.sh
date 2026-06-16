@@ -2,7 +2,7 @@
 # install.sh — TKB Plugin Full Installer
 #
 # Sets up everything required to run all tkb skills:
-#   tkb-ingest, tkb-qa, tkb-lint, tkb-remove, tkb-link, tkb-agents
+#   ingest, qa, tkb-lint, tkb-remove, tkb-link, agents
 #
 # Usage:
 #   bash ~/.claude/plugins/marketplaces/tkb/install.sh [--vault-path /path/to/vault]
@@ -82,7 +82,7 @@ total_entries: 0
 # TKB Index
 
 > 知识库统一索引。每个条目包含轻量摘要和标签，用于快速定位。
-> 由 \`tkb-ingest\` 和 \`tkb-agents\` 自动维护，请勿手动编辑。
+> 由 `ingest` 和 `agents` 自动维护，请勿手动编辑。
 
 ## 最近入库
 
@@ -111,9 +111,9 @@ compiles it into structured wiki notes.
 
 | Skill | Command | Purpose |
 |-------|---------|---------|
-| `tkb-ingest` | `/tkb-ingest [work|ttt] <URL>` | Ingest URL/Git/video + compile |
-| `tkb-agents` | `/tkb-agents [work|ttt]` | Ingest pasted article + bilingual notes |
-| `tkb-qa` | `/tkb-qa [work:|ttt:] <question>` | Query knowledge base |
+| `ingest` | `/ingest [work|ttt] <URL>` | Ingest URL/Git/video + compile |
+| `agents` | `/agents [work|ttt]` | Ingest pasted article + bilingual notes |
+| `qa` | `/qa [work:|ttt:] <question>` | Query knowledge base |
 | `tkb-lint` | `/tkb-lint` | Health check |
 | `tkb-remove` | `/tkb-remove <path>` | Delete entry + cleanup |
 | `tkb-link` | `/tkb-link` | Cross-concept association scan |
@@ -128,13 +128,13 @@ else
   ok "CLAUDE.md (exists, not overwritten)"
 fi
 
-# ── 4. tkb-agents workspace (agent-summary) ───────────────────────────────────
+# ── 4. agents workspace (agent-summary) ───────────────────────────────────
 echo ""
-echo "── tkb-agents workspace"
+echo "── agents workspace"
 
 INBOX="${AGENT_WORKSPACE}/inbox.md"
 AGENT_CLAUDE_MD="${AGENT_WORKSPACE}/CLAUDE.md"
-SENTINEL="<!-- tkb-agents inbox — paste article content below this line, then run /tkb-agents [work|ttt] -->"
+SENTINEL="<!-- agents inbox — paste article content below this line, then run /agents [work|ttt] -->"
 
 if [[ ! -d "${AGENT_WORKSPACE}" ]]; then
   mkdir -p "${AGENT_WORKSPACE}"
@@ -154,13 +154,13 @@ if [[ ! -f "${AGENT_CLAUDE_MD}" ]]; then
   cat > "${AGENT_CLAUDE_MD}" << EOF
 # agent-summary
 
-Workspace for \`/tkb-agents\` — paste English web articles into \`inbox.md\`,
-then run \`/tkb-agents [work|ttt]\` to translate, archive, and ingest into TKB.
+Workspace for `/agents` — paste English web articles into `inbox.md`,
+then run `/agents [work|ttt]` to translate, archive, and ingest into TKB.
 
 ## How to use
 
-1. Paste article content into \`inbox.md\` (below the sentinel comment)
-2. Run \`/tkb-agents work\` or \`/tkb-agents ttt\`
+1. Paste article content into `inbox.md` (below the sentinel comment)
+2. Run `/agents work` or `/agents ttt`
 
 ## TKB Vault
 
@@ -171,7 +171,7 @@ else
   ok "CLAUDE.md (exists, not overwritten)"
 fi
 
-# ── 5. yt-dlp (required by tkb-ingest for YouTube/Bilibili) ──────────────────
+# ── 5. yt-dlp (required by ingest for YouTube/Bilibili) ──────────────────
 echo ""
 echo "── Dependencies"
 
@@ -205,7 +205,7 @@ echo ""
 echo "Installation complete."
 echo ""
 echo "Quick start:"
-echo "  tkb-ingest  → open vault in Claude Code, run: /tkb-ingest ttt <URL>"
-echo "  tkb-agents  → paste article into ${INBOX}"
-echo "               open ${AGENT_WORKSPACE} in Claude Code, run: /tkb-agents ttt"
+echo "  ingest  → open vault in Claude Code, run: /ingest ttt <URL>"
+echo "  agents  → paste article into ${INBOX}"
+echo "               open ${AGENT_WORKSPACE} in Claude Code, run: /agents ttt"
 echo ""

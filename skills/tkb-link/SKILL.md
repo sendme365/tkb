@@ -15,7 +15,7 @@ TKB 知识库根目录：`$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/D
 
 ## 设计原则
 
-**不在 tkb-ingest 中执行** — ingest 只建立"新内容 → 已有 concept"的直接关联，保持入库流程轻量。全局关联分析由本 skill 独立承担，按需手动触发，避免每次入库都扫全库（token 消耗随知识库增长线性上涨）。
+**不在 ingest 中执行** — ingest 只建立"新内容 → 已有 concept"的直接关联，保持入库流程轻量。全局关联分析由本 skill 独立承担，按需手动触发，避免每次入库都扫全库（token 消耗随知识库增长线性上涨）。
 
 ## 流程
 

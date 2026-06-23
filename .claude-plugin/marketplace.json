@@ -9,7 +9,7 @@
     {
       "name": "tkb",
       "source": "./",
-      "description": "TKB skills: ingest, agents, query, lint, remove, link",
+      "description": "TKB skills: ingest, tkbagents, query, lint, remove, link",
       "version": "1.5.22"
     }
   ]

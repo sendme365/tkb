@@ -1,5 +1,5 @@
 ---
-name: agents
+name: tkbagents
 manual_only: true
 description: >
   TKB 知识库文章入库（粘贴模式）。将用户粘贴到 inbox.md 的英文文章翻译为中文，
@@ -35,9 +35,9 @@ INBOX     = ~/SAPDevelop/Work/agent-summary/inbox.md
 ## 第一步：读取并验证 inbox
 
 1. 使用 Read 工具读取 `INBOX`（即 `~/SAPDevelop/Work/agent-summary/inbox.md`）
-2. 如果文件不存在、内容为空，或仅包含以下哨兵占位符注释则终止，提示"请先将文章内容粘贴到 inbox.md，再运行 /agents"：
+2. 如果文件不存在、内容为空，或仅包含以下哨兵占位符注释则终止，提示"请先将文章内容粘贴到 inbox.md，再运行 /tkbagents"：
    ```
-   <!-- agents inbox — paste article content below this line, then run /agents [work|ttt] -->
+   <!-- agents inbox — paste article content below this line, then run /tkbagents [work|ttt] -->
    ```
 3. 提取可选标题提示：如果第一行为 `<!-- title: ... -->`，将 `...` 作为 `ARTICLE_TITLE_EN`
 4. 否则从内容中推断标题：优先取第一个 H1（`# Title`），其次取第一个非空行
@@ -191,7 +191,7 @@ lang_translated: "zh"
 使用 Write 工具将以下哨兵内容写入 `INBOX`：
 
 ```markdown
-<!-- agents inbox — paste article content below this line, then run /agents [work|ttt] -->
+<!-- agents inbox — paste article content below this line, then run /tkbagents [work|ttt] -->
 ```
 
 ## 第九步：追加入库日志

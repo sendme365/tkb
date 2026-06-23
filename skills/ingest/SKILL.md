@@ -112,6 +112,40 @@ test -d "<用户输入路径>/.git" && echo "valid git repo" || echo "not a git 
 
 > 注意：产出文件列表必须使用 `[[wikilink]]` 格式（不含 `.md` 后缀），确保在 Obsidian 中可点击跳转。如果 concept/analysis 文件在根目录下（无子目录），省略 `<folder>/`。视频来源路径含平台子目录：`raw/video/<platform>/<ENTRY_SLUG>/index`。
 
+### 第七点七步：写入入库书签
+
+文件路径：`${TKB_ROOT}/bookmarks/ingest-bookmarks.md`
+
+**若文件不存在**，先用 Write 工具创建，内容如下：
+
+```markdown
+---
+type: ingest-bookmarks
+cssclasses:
+  - bookmarks-compact
+---
+
+# Ingest Bookmarks
+```
+
+**构造新条目**（标题用原文标题，空值写「—」）：
+
+```markdown
+## <原文标题>
+
+- **来源**：<来源URL>
+- **入库文件**：[[raw/<web|video|git>/<ENTRY_SLUG>/index]]
+- **Concept**：[[wiki/concepts/<concept-slug>]] 或 —
+- **Analysis**：[[wiki/analysis/<concept-slug>]] 或 —
+- **费曼笔记**：[[feynman/<YYYY-MM-DD>-<concept-slug>]] 或 —
+
+---
+```
+
+使用 Read 工具读取文件，再用 Edit 工具在 `# Ingest Bookmarks` 标题下方、第一条 `## ` 记录之前插入新条目（逆序，最新在顶）。
+
+> 注意：Concept 只取本次**新建**的主概念（第一个新建 concept），反向链接更新的 concept 不写入。视频来源路径含平台子目录：`raw/video/<platform>/<ENTRY_SLUG>/index`。
+
 ### 第八步：报告结果
 
 向用户报告（产出文件使用 `[[wikilink]]` 格式）：

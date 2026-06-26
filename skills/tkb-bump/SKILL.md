@@ -24,17 +24,19 @@ GitHub Actions then creates the release automatically.
 ## Steps
 
 1. Confirm working directory is `/Users/I333878/.claude/plugins/marketplaces/tkb`
-2. Check `git status` — if there are uncommitted changes, **commit them first automatically** (do not ask the user):
-   ```bash
-   cd /Users/I333878/.claude/plugins/marketplaces/tkb
-   git add -A
-   git commit -m "$(cat <<'EOF'
-   <concise description of the changes>
+2. Run `git status`. If there are uncommitted changes:
+   - Run `git diff` to review what changed
+   - Stage and commit **all** changed files (use specific file names, not `-A`):
+     ```bash
+     git add <file1> <file2> ...
+     git commit -m "$(cat <<'EOF'
+     <concise description derived from the diff>
 
-   Co-Authored-By: Claude <noreply@anthropic.com>
-   EOF
-   )"
-   ```
+     Co-Authored-By: Claude <noreply@anthropic.com>
+     EOF
+     )"
+     ```
+   - Do this automatically — no need to ask the user first
 3. Determine the bump type from user input (default: patch)
 4. Run:
    ```bash

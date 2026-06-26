@@ -8,13 +8,13 @@ description: >
 
 # TKB Bookmark
 
-轻量书签收藏工具。将 URL 和一句话描述追加到 `bookmarks/bookmarks.md`，方便以后查找。
+轻量书签收藏工具。将 URL 和一句话描述追加到 `bookmarks/url-bookmarks.md`，方便以后查找。
 
 ## 仓库位置
 
 TKB 知识库根目录：`$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/TKB/`
 
-书签文件：`bookmarks/bookmarks.md`
+书签文件：`bookmarks/url-bookmarks.md`
 
 ## 流程
 
@@ -30,7 +30,7 @@ TKB 知识库根目录：`$HOME/Library/Mobile\ Documents/iCloud\~md\~obsidian/D
 
 ### Step 2 — 写入书签文件
 
-书签文件路径：`$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/TKB/bookmarks/bookmarks.md`
+书签文件路径：`$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/TKB/bookmarks/url-bookmarks.md`
 
 **若文件不存在**，创建文件，内容如下：
 

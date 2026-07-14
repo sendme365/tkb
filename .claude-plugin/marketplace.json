@@ -10,7 +10,7 @@
       "name": "tkb",
       "source": "./",
       "description": "TKB skills: ingest, tkbagents, query, lint, remove, link",
-      "version": "1.5.30"
+      "version": "1.5.31"
     }
   ]
 }

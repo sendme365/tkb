@@ -146,6 +146,41 @@ cssclasses:
 
 > 注意：Concept 只取本次**新建**的主概念（第一个新建 concept），反向链接更新的 concept 不写入。视频来源路径含平台子目录：`raw/video/<platform>/<ENTRY_SLUG>/index`。
 
+### 第七点九步：Gardener 书签追加
+
+**判断是否为 Gardener 相关内容：**
+
+1. 以下任一条件满足即视为 Gardener 相关：
+   - 用户输入包含 `--gardener` 参数
+   - URL 中包含 `gardener`（大小写不敏感）
+   - 原文标题或已抓取的内容中包含以下关键词之一：`Gardener`、`gardenlet`、`shoot cluster`、`seed cluster`、`Garden Project`、`SAP Gardener`
+2. **如果判定为 Gardener 相关**，追加写入 `${TKB_ROOT}/bookmarks/gardener-bookmarks.md`：
+   - **若文件不存在**，先用 Write 工具创建：
+     ```markdown
+     ---
+     type: gardener-bookmarks
+     cssclasses:
+       - bookmarks-compact
+     ---
+
+     # Gardener Bookmarks
+     ```
+   - **构造新条目**（与 ingest-bookmarks 格式一致，额外加 `tags: gardener`）：
+     ```markdown
+     ## <原文标题>
+
+     - **来源**：<来源URL>
+     - **入库文件**：[[raw/<web|video|git>/<ENTRY_SLUG>/index]]
+     - **Concept**：[[wiki/concepts/<concept-slug>]] 或 —
+     - **Analysis**：[[wiki/analysis/<concept-slug>]] 或 —
+     - **费曼笔记**：[[feynman/<YYYY-MM-DD>-<concept-slug>]] 或 —
+     - **tags**：#gardener
+
+     ---
+     ```
+   - 使用 Read 工具读取文件，再用 Edit 工具在 `# Gardener Bookmarks` 标题下方、第一条 `## ` 记录之前插入（逆序，最新在顶）
+3. **如果判定为非 Gardener 相关**，跳过此步，不做任何操作
+
 ### 第八步：报告结果
 
 向用户报告（产出文件使用 `[[wikilink]]` 格式）：

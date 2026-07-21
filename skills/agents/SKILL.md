@@ -46,7 +46,7 @@ INBOX     = ~/SAPDevelop/Work/agent-summary/inbox.md
 ## 第二步：翻译为中文
 
 **翻译前，先读取术语表：**
-使用 Read 工具读取 `${TKB_ROOT}/wiki/terms.md`，将其中的术语映射作为强制约束：
+使用 Read 工具读取 `${TKB_ROOT}/terms.md`，将其中的术语映射作为强制约束：
 - 右侧与左侧相同的条目（如 `landscape = landscape`）：该词保留英文原样，不翻译
 - 右侧有中文的条目（如 `control plane = 控制平面`）：统一使用该中文译名
 - 带 `# draft` 的行为草稿，**不适用**，跳过
@@ -197,7 +197,7 @@ lang_translated: "zh"
 
 扫描本次翻译（`RAW_CONTENT` 对应的中文输出）中所有以 `术语 (Term)` 格式标注的词对，以及 Register A 的"关键术语"字段中列出的所有术语。
 
-1. 读取 `${TKB_ROOT}/wiki/terms.md`（若上一步已读取，可直接使用缓存内容）
+1. 读取 `${TKB_ROOT}/terms.md`（若上一步已读取，可直接使用缓存内容）
 2. 找出尚未收录在 terms.md 中的术语（忽略带 `# draft` 的行）
 3. 对每个未收录术语，在 terms.md 末尾追加一行：
    ```

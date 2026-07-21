@@ -38,7 +38,7 @@ mv "triage/web/<目录名>" "raw/web/<目录名>"
 这是核心步骤，一次性生成三层产出。
 
 **编译前，先读取术语表：**
-使用 Read 工具读取 `${TKB_ROOT}/wiki/terms.md`（`TKB_ROOT=$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/TKB`）。
+使用 Read 工具读取 `${TKB_ROOT}/terms.md`（`TKB_ROOT=$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/TKB`）。
 在后续所有生成中文内容的步骤（6b 摘要、6c concept、6d analysis、6f 费曼笔记）中，必须遵守术语映射：
 - 右侧与左侧相同的条目（如 `landscape = landscape`）：该词保留英文原样
 - 右侧有中文的条目（如 `control plane = 控制平面`）：统一使用该中文译名
